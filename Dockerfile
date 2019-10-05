@@ -46,7 +46,7 @@ RUN apk add --no-cache --virtual .build-deps \
     && rm -rf /etc/nginx/conf.d/*
 
 # use self signed ssl certificate to start nginx
-COPY ./docker/resty/ssl /etc/resty-auto-ssl
+COPY ./ssl /etc/resty-auto-ssl
 # COPY ./example/nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
 RUN rm -rf /etc/nginx/conf.d
 # COPY ./example/server.conf /etc/nginx/conf.d/server.conf
