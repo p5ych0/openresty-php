@@ -43,7 +43,7 @@ RUN apk add --no-cache --virtual .build-deps \
     && /usr/local/openresty/luajit/bin/luarocks install lua-resty-auto-ssl \
     && apk del .build-deps \
     && mkdir -p /var/cache/nginx \
-    && rm -rf /etc/nginx/conf.d
+    && rm -rf /etc/nginx/conf.d \
     && rm -rf /usr/local/openresty/nginx/conf
 
 # use self signed ssl certificate to start nginx
