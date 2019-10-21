@@ -32,12 +32,10 @@ RUN apk add --no-cache --virtual .build-deps \
         tar \
         unzip \
         zip \
-        unzip \
         g++ \
         cmake \
         lua \
         lua-dev \
-        make \
         autoconf \
         automake \
     && /usr/local/openresty/luajit/bin/luarocks install lua-resty-auto-ssl \
