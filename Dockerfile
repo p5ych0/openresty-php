@@ -12,9 +12,9 @@ RUN apk add --no-cache --virtual .run-deps \
     net-tools \
     procps \
     && mkdir -p /etc/resty-auto-ssl \
-    && addgroup -S nginx \
-    && adduser -D -S -h /var/cache/nginx -s /sbin/nologin -G nginx nginx \
-    && chown nginx /etc/resty-auto-ssl
+    && addgroup -g 82 -S www-data \
+    && adduser -u 82 -D -S -h /var/cache/nginx -s /sbin/nologin -G www-data www-data \
+    && chown www-data /etc/resty-auto-ssl
 
 RUN apk add --no-cache --virtual .build-deps \
         gcc \
