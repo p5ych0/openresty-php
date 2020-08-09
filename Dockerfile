@@ -288,6 +288,8 @@ RUN apk add --no-cache --virtual .build-deps \
     && echo -e "opcache.memory_consumption=192\nopcache.interned_strings_buffer=16\nopcache.max_accelerated_files=7963\n\
 opcache.revalidate_freq=0\nopcache.fast_shutdown=1\nopcache.enable_cli=1\nopcache.enable=1\nopcache.validate_timestamps=1\n" >> /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
 
+RUN wget http://browscap.org/stream?q=Full_PHP_BrowsCapINI -O /usr/local/etc/php/browscap.ini
+
 COPY ./logrotate.d/openresty /etc/logrotate.d/openresty
 COPY ./www.conf /usr/local/etc/php-fpm.d/zz-docker.conf
 COPY ./php.ini /usr/local/etc/php/php.ini
