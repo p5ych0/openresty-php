@@ -1,0 +1,12 @@
+/usr/local/openresty/nginx/logs/*.log {
+    compress
+    copytruncate
+    create 0644 root root
+    delaycompress
+    missingok
+    rotate 7
+    sharedscripts
+    postrotate
+        kill -USR1 `cat /usr/local/openresty/nginx/logs/nginx.pid`
+    endscript
+}

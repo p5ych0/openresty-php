@@ -1,0 +1,5 @@
+# scheduler
+* * * * * sudo -u www-data /usr/local/bin/php /var/www/html/artisan schedule:run > /dev/null 2>&1
+30 */2 * * * sudo -u www-data /usr/local/bin/php /var/www/html/artisan queue:restart > /dev/null
+0 21 * * * /usr/sbin/logrotate -v /etc/logrotate.d/openresty
+*/10 * * * * cd /var/www/html && sudo -u www-data GIT_SSH_COMMAND='ssh -i /root/.ssh/git_rsa' git pull 2>&1 > /dev/null
