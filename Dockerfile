@@ -10,11 +10,21 @@ RUN apk add --no-cache --virtual .run-deps \
     mc \
     wget \
     net-tools \
+    nss-tools \
     procps \
     && mkdir -p /etc/resty-auto-ssl \
     && addgroup -g 82 -S www-data \
     && adduser -u 82 -D -S -h /var/cache/nginx -s /sbin/nologin -G www-data www-data \
-    && chown www-data /etc/resty-auto-ssl
+    && openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 \
+        -subj '/CN=sni-support-required-for-valid-ssl' \
+        -keyout /etc/resty-auto-ssl/fallback.key \
+        -out /etc/resty-auto-ssl/fallback.crt \
+        && chown www-data -R /etc/resty-auto-ssl \
+    && chown www-data /etc/resty-auto-ssl \
+    && mkdir /var/log/nginx \
+    && chown www-data:www-data /var/log/nginx \
+    && chmod 0775 /var/log/nginx \
+    && chown www-data:www-data -R /var/www
 
 RUN apk add --no-cache --virtual .build-deps \
         gcc \
@@ -44,8 +54,6 @@ RUN apk add --no-cache --virtual .build-deps \
     && rm -rf /etc/nginx/conf.d \
     && rm -rf /usr/local/openresty/nginx/conf
 
-# use self signed ssl certificate to start nginx
-COPY ./ssl /etc/resty-auto-ssl
 # COPY ./example/conf /usr/local/openresty/nginx/conf
 # COPY ./example/conf.d /etc/nginx/conf.d
 
