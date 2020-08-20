@@ -23,8 +23,7 @@ RUN apk add --no-cache --virtual .run-deps \
     && chown www-data /etc/resty-auto-ssl \
     && mkdir /var/log/nginx \
     && chown www-data:www-data /var/log/nginx \
-    && chmod 0775 /var/log/nginx \
-    && chown www-data:www-data -R /var/www
+    && chmod 0775 /var/log/nginx
 
 RUN apk add --no-cache --virtual .build-deps \
         gcc \
