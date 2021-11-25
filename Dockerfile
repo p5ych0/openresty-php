@@ -13,7 +13,7 @@ RUN apk add --no-cache --virtual .run-deps \
     nss-tools \
     procps \
     && mkdir -p /etc/resty-auto-ssl \
-    && addgroup -g 82 -S www-data \
+#    && addgroup -g 82 -S www-data \
     && adduser -u 82 -D -S -h /var/cache/nginx -s /sbin/nologin -G www-data www-data \
     && openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 \
         -subj '/CN=sni-support-required-for-valid-ssl' \
