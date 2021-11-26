@@ -9,6 +9,8 @@ RUN apk add --no-cache --virtual .run-deps \
     openssl \
     mc \
     wget \
+    libcap \
+    shadow \
     net-tools \
     nss-tools \
     procps \
