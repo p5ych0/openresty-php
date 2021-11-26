@@ -13,13 +13,15 @@ RUN apk add --no-cache --virtual .run-deps \
     nss-tools \
     procps \
     && mkdir -p /etc/resty-auto-ssl \
-    && adduser -u 82 -D -S -h /var/cache/nginx -s /sbin/nologin -G www-data www-data \
-    && openssl req -new -newkey rsa:2048 -days 3650 -nodes -sha256 -x509 \
+    && adduser -u 82 -D -S -h /var/cache/nginx -s /sbin/nologin -G www-data www-data
+
+RUN ["/bin/bash", "-c", "openssl req -new -newkey rsa:2048 -days 365 -nodes -sha256 -x509 \
       -keyout /etc/resty-auto-ssl/fallback.key \
       -out /etc/resty-auto-ssl/fallback.crt \
       -subj '/CN=localhost-sni-support-required-for-valid-ssl' -extensions EXT -config <( \
-       printf "[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:localhost\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth") \
-    && chown www-data -R /etc/resty-auto-ssl \
+       printf \"[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:localhost\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth\")"]
+
+RUN chown www-data -R /etc/resty-auto-ssl \
     && chown www-data /etc/resty-auto-ssl \
     && mkdir /var/log/nginx \
     && chown www-data:www-data /var/log/nginx \
