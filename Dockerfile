@@ -13,13 +13,14 @@ RUN apk add --no-cache --virtual .run-deps \
     nss-tools \
     procps \
     && mkdir -p /etc/resty-auto-ssl \
-#    && addgroup -g 82 -S www-data \
     && adduser -u 82 -D -S -h /var/cache/nginx -s /sbin/nologin -G www-data www-data \
     && openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 \
-        -subj '/CN=sni-support-required-for-valid-ssl' \
-        -keyout /etc/resty-auto-ssl/fallback.key \
-        -out /etc/resty-auto-ssl/fallback.crt \
-        && chown www-data -R /etc/resty-auto-ssl \
+      -keyout /etc/resty-auto-ssl/fallback.key \
+      -out /etc/resty-auto-ssl/fallback.crt \
+      -newkey rsa:2048 -nodes -sha256 \
+      -subj '/CN=localhost-sni-support-required-for-valid-ssl' -extensions EXT -config <( \
+       printf "[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:localhost\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth")
+    && chown www-data -R /etc/resty-auto-ssl \
     && chown www-data /etc/resty-auto-ssl \
     && mkdir /var/log/nginx \
     && chown www-data:www-data /var/log/nginx \
