@@ -1,11 +1,38 @@
-version: '3'
+version: '3.8'
+
 services:
   openresty:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: openresty-php
+    restart: unless-stopped
     ports:
       - "33333:80"
+      - "33334:443"  # HTTPS port
     volumes:
-      - ./example/conf:/usr/local/openresty/nginx/conf
-      - ./example/conf.d:/etc/nginx/conf.d
+      - ./example/conf:/usr/local/openresty/nginx/conf:ro
+      - ./example/conf.d/server.conf:/etc/nginx/server.conf:ro
+      - ./logs:/usr/local/openresty/nginx/logs:rw  # OpenResty logs
+      - ./www:/var/www/html:rw              # Web content
+    environment:
+      - PUID=${PUID:-1000}    # Use host user ID or default to 1000
+      - PGID=${PGID:-1000}    # Use host group ID or default to 1000
+      - USER_NAME=www-data
+      - GROUP_NAME=www-data
+      # SSL Configuration
+      - ALLOWED_DOMAINS=${ALLOWED_DOMAINS:-localhost,*.local,127.0.0.1}
+      - SSL_EMAIL=${SSL_EMAIL:-}  # Required for production SSL
+      - SSL_STAGING=${SSL_STAGING:-false}  # Set to true for testing
+    networks:
+      - openresty-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+networks:
+  openresty-network:
+    driver: bridge
