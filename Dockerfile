@@ -124,12 +124,13 @@ fi
 # Set ownership of critical directories (skip read-only mounted volumes)
 chown -R "$USER_NAME:$GROUP_NAME" \
     /etc/resty-auto-ssl \
-    /usr/local/openresty/nginx/logs \
+    /usr/local/openresty/nginx \
     /var/cache/nginx \
     /var/www/html 2>/dev/null || true
 
 # Set proper permissions (skip read-only mounted directories)
 chmod 0775 /usr/local/openresty/nginx/logs /var/cache/nginx 2>/dev/null || true
+chmod 0775 /usr/local/openresty/nginx/cache /var/cache/nginx 2>/dev/null || true
 chmod 0775 /usr/local/openresty/nginx/*_temp 2>/dev/null || true
 chmod 0755 /etc/resty-auto-ssl 2>/dev/null || true
 
